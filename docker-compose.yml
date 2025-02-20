@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - ai-network
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: chromadb
+    environment:
+      - ALLOW_RESET=true
+      - CHROMA_SERVER_AUTH_CREDENTIALS_FILE=''
+      - CHROMA_SERVER_AUTH_CREDENTIALS_PROVIDER=''
+      - CHROMA_SERVER_AUTH_PROVIDER=''
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    networks:
+      - ai-network
+
+  dev-assist:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dev-assist
+    volumes:
+      - .:/app
+    depends_on:
+      - ollama
+      - chromadb
+    networks:
+      - ai-network
+
+networks:
+  ai-network:
+    driver: bridge
+
+volumes:
+  ollama_data:
+  chroma_data: 
