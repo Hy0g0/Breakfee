@@ -31,9 +31,7 @@ jobs:
     - name: Run tests
       working-directory: ./Cli
       run: |
-        go install github.com/onsi/ginkgo/v2/ginkgo@latest
-        go mod tidy
-        go test ./...
+        go test
 
     - name: Run build
       working-directory: ./Cli
