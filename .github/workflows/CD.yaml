@@ -1,0 +1,72 @@
+name: CD - Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+
+    - name: Get version
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+    - name: Build for Linux AMD64
+      working-directory: ./Cli
+      run: |
+        GOOS=linux GOARCH=amd64 go build -o dev-assist-linux-amd64
+        tar czf dev-assist-linux-amd64.tar.gz dev-assist-linux-amd64
+        sha256sum dev-assist-linux-amd64.tar.gz > dev-assist-linux-amd64.tar.gz.sha256
+
+    - name: Build for MacOS ARM64
+      working-directory: ./Cli
+      run: |
+        GOOS=darwin GOARCH=arm64 go build -o dev-assist-darwin-arm64
+        tar czf dev-assist-darwin-arm64.tar.gz dev-assist-darwin-arm64
+        sha256sum dev-assist-darwin-arm64.tar.gz > dev-assist-darwin-arm64.tar.gz.sha256
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          Cli/dev-assist-linux-amd64.tar.gz
+          Cli/dev-assist-linux-amd64.tar.gz.sha256
+          Cli/dev-assist-darwin-arm64.tar.gz
+          Cli/dev-assist-darwin-arm64.tar.gz.sha256
+        name: Release ${{ steps.get_version.outputs.VERSION }}
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+        body: |
+          ## Dev Assist CLI ${{ steps.get_version.outputs.VERSION }}
+
+          ### Installation
+          
+          #### Linux AMD64
+          ```bash
+          curl -LO https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.VERSION }}/dev-assist-linux-amd64.tar.gz
+          tar xzf dev-assist-linux-amd64.tar.gz
+          sudo mv dev-assist-linux-amd64 /usr/local/bin/dev-assist
+          ```
+
+          #### MacOS ARM64 (Apple Silicon)
+          ```bash
+          curl -LO https://github.com/${{ github.repository }}/releases/download/${{ steps.get_version.outputs.VERSION }}/dev-assist-darwin-arm64.tar.gz
+          tar xzf dev-assist-darwin-arm64.tar.gz
+          sudo mv dev-assist-darwin-arm64 /usr/local/bin/dev-assist
+          ```
+
+          SHA256 checksums are provided in the `.sha256` files. 
