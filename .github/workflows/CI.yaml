@@ -24,13 +24,16 @@ jobs:
 
     - name: Install dependencies
       working-directory: ./Cli
-      run: go mod download
+      run: |
+        go mod download
+        go get -t ./...
 
     - name: Run tests
       working-directory: ./Cli
       run: |
         go install github.com/onsi/ginkgo/v2/ginkgo@latest
-        go test
+        go mod tidy
+        go test ./...
 
     - name: Run build
       working-directory: ./Cli
