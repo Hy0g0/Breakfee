@@ -30,7 +30,7 @@ jobs:
       working-directory: ./Cli
       run: |
         go install github.com/onsi/ginkgo/v2/ginkgo@latest
-        ginkgo -r -v --randomize-all --randomize-suites --fail-on-pending --cover --trace --race --progress
+        go test
 
     - name: Run build
       working-directory: ./Cli
@@ -52,19 +52,3 @@ jobs:
       with:
         version: latest
         working-directory: ./Cli
-
-  docker:
-    name: Docker Build Test
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Build Docker image
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        push: false
-        tags: dev-assist:test

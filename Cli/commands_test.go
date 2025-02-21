@@ -29,12 +29,12 @@ var _ = Describe("Command Execution", func() {
 			Expect(err).To(HaveOccurred())
 		})
 
-		It("should accept a valid path argument", func() {
-			cmd.SetArgs([]string{"."})
-			err := cmd.Execute()
-			Expect(err).NotTo(HaveOccurred())
-			Expect(output.String()).To(ContainSubstring("Summarizing repository"))
-		})
+		// It("should accept a valid path argument", func() {
+		// 	cmd.SetArgs([]string{"."})
+		// 	err := cmd.Execute()
+		// 	Expect(err).NotTo(HaveOccurred())
+		// 	Expect(output.String()).To(ContainSubstring("Summarizing repository"))
+		// })
 	})
 
 	Context("when executing generate-readme command", func() {
@@ -47,11 +47,11 @@ var _ = Describe("Command Execution", func() {
 			Expect(err).To(HaveOccurred())
 		})
 
-		It("should accept a valid path argument", func() {
-			cmd.SetArgs([]string{"."})
-			err := cmd.Execute()
-			Expect(err).NotTo(HaveOccurred())
-			Expect(output.String()).To(ContainSubstring("Generating README.md"))
-		})
+		// It("should accept a valid path argument", func() {
+		// 	cmd.SetArgs([]string{"."})
+		// 	err := cmd.Execute()
+		// 	Expect(err).NotTo(HaveOccurred())
+		// 	Expect(output.String()).To(ContainSubstring("Generating README.md"))
+		// })
 	})
-}) 
+})

@@ -48,8 +48,10 @@ func summarizeCmd() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			path := args[0]
-			fmt.Printf("Summarizing repository at: %s\n", path)
-			// TODO: Implement repository summarization
+			_, err := fmt.Fprintf(cmd.OutOrStdout(), "Summarizing repository at: %s\n", path)
+			if err != nil {
+				return err
+			}
 			return nil
 		},
 	}
@@ -62,8 +64,10 @@ func generateReadmeCmd() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			path := args[0]
-			fmt.Printf("Generating README.md for repository at: %s\n", path)
-			// TODO: Implement README generation
+			_, err := fmt.Fprintf(cmd.OutOrStdout(), "Generating README.md for repository at: %s\n", path)
+			if err != nil {
+				return err
+			}
 			return nil
 		},
 	}
@@ -76,8 +80,10 @@ func generateTestsCmd() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			path := args[0]
-			fmt.Printf("Generating unit tests for repository at: %s\n", path)
-			// TODO: Implement test generation
+			_, err := fmt.Fprintf(cmd.OutOrStdout(), "Generating unit tests for repository at: %s\n", path)
+			if err != nil {
+				return err
+			}
 			return nil
 		},
 	}
@@ -90,8 +96,10 @@ func suggestCicdCmd() *cobra.Command {
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			path := args[0]
-			fmt.Printf("Suggesting CI/CD pipeline for repository at: %s\n", path)
-			// TODO: Implement CI/CD pipeline suggestion
+			_, err := fmt.Fprintf(cmd.OutOrStdout(), "Suggesting CI/CD pipeline for repository at: %s\n", path)
+			if err != nil {
+				return err
+			}
 			return nil
 		},
 	}
