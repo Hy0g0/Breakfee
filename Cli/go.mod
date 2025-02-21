@@ -1,12 +1,8 @@
 module dev-assist
 
-go 1.22.0
-
-toolchain go1.23.0
-
 require (
-	github.com/onsi/ginkgo/v2 v2.22.2
-	github.com/onsi/gomega v1.36.2
+	github.com/onsi/ginkgo/v2 v2.15.0
+	github.com/onsi/gomega v1.31.1
 	github.com/spf13/cobra v1.8.0
 )
 
